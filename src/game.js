@@ -1,21 +1,29 @@
 import * as THREE from 'three';
+import { world, stats } from './world';
 
 'use strict';
 
 /* global THREE */
 
-console.log(THREE);
-
 function main() {
   const canvas = document.querySelector('#c');
-  const renderer = new THREE.WebGLRenderer({canvas});
+  const tilecount = document.querySelector('#tilecount');
+  const hits = document.querySelector('#hits');
 
-  const fov = 75;
+  const renderer = new THREE.WebGLRenderer({canvas});
+  renderer.setSize(500, 500)
+
+  const fov = 50;
   const aspect = 2;  // the canvas default
   const near = 0.1;
-  const far = 5;
+  const far = 1000;
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.z = 2;
+
+  camera.position.x = 2;
+  camera.position.y = 2;
+  camera.position.z = 3;
+  camera.lookAt (new THREE.Vector3 (2, 0, 0));
+
 
   const scene = new THREE.Scene();
 
@@ -27,28 +35,19 @@ function main() {
     scene.add(light);
   }
 
-  const boxWidth = 1;
-  const boxHeight = 1;
-  const boxDepth = 1;
-  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
-  const material = new THREE.MeshPhongMaterial({color: 0x44aa88});  // greenish blue
-
-  const cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
+  const runWorld = world(scene);
 
   function render(time) {
-    time *= 0.001;  // convert time to seconds
 
-    cube.rotation.x = time;
-    cube.rotation.y = time;
-
-    renderer.render(scene, camera);
+    renderer.render(runWorld(), camera);
+    tilecount.innerHTML = `tiles: ${stats.tileCount}`;
+    hits.innerHTML = `hits: ${stats.hits}`;
 
     requestAnimationFrame(render);
   }
   requestAnimationFrame(render);
 
 }
+
 
 main();
