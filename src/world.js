@@ -84,15 +84,15 @@ export function world(scene) {
     closure.tiletator--;
     if(closure.tiletator === 0) {
       closure.tiles.push(newTile(scene, 1, 1));
-      closure.tiletator = getRandomInt(50, 250);
+      closure.tiletator = getRandomInt(150, 250);
     }
     closure.tiles.forEach((tile) => {
       tile.position.z += 0.02;
     });
-    if(right) {
+    if(right && closure.player.position.x < 5) {
       closure.player.position.x += 0.05;
     }
-    if(left) {
+    if(left && closure.player.position.x > -0.5) {
       closure.player.position.x -= 0.05;
     }
 

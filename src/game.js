@@ -11,7 +11,7 @@ function main() {
   const hits = document.querySelector('#hits');
 
   const renderer = new THREE.WebGLRenderer({canvas});
-  renderer.setSize(500, 500)
+  renderer.setSize(200, 200)
 
   const fov = 50;
   const aspect = 2;  // the canvas default
